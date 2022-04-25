@@ -1,0 +1,19 @@
+name: Sync Job
+on: [push]
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - shell: bash
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          ./increase.sh
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add count.txt
+          git commit -m "Update count"
+          ./sync.sh git@gitlab.com:billchenchina/sync.git

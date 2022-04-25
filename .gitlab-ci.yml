@@ -1,0 +1,14 @@
+variables:
+  GIT_STRATEGY: clone
+  GIT_CHECKOUT: "false"
+  GIT_DEPTH: 0
+
+sync:
+  script:
+    - git checkout master
+    - ./increase.sh
+    - git config user.name "GitLab Bot"
+    - git config user.email "gitlab-bot@gitlab.com"
+    - git add count.txt
+    - git commit -m "Update count"
+    - ./sync.sh git@github.com:billchenchina/sync.git
